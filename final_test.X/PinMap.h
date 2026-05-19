@@ -1,0 +1,136 @@
+#ifndef PIN_MAP_H
+#define PIN_MAP_H
+
+#include <xc.h>
+#include "AD.h"
+#include "BOARD.h"
+#include "IO_Ports.h"
+#include "RC_Servo.h"
+#include "pwm.h"
+
+/* Planned final robot pin map. Keep this file as the code-facing aliases. */
+
+/* Drive PWM outputs: 4 mecanum motors. */
+#define DRIVE_FL_PWM              PWM_PORTX11
+#define DRIVE_FR_PWM              PWM_PORTY04
+#define DRIVE_RL_PWM              PWM_PORTY10
+#define DRIVE_RR_PWM              PWM_PORTY12
+
+#define PIN_DRIVE_FRONT_LEFT_PWM   DRIVE_FL_PWM
+#define PIN_DRIVE_FRONT_RIGHT_PWM  DRIVE_FR_PWM
+#define PIN_DRIVE_REAR_LEFT_PWM    DRIVE_RL_PWM
+#define PIN_DRIVE_REAR_RIGHT_PWM   DRIVE_RR_PWM
+
+#define PIN_DRIVE_PWM_MASK (PIN_DRIVE_FRONT_LEFT_PWM | PIN_DRIVE_FRONT_RIGHT_PWM | \
+                            PIN_DRIVE_REAR_LEFT_PWM | PIN_DRIVE_REAR_RIGHT_PWM)
+#define PINMAP_DRIVE_PWM_ALL      PIN_DRIVE_PWM_MASK
+
+/* Drive H-bridge direction pins on PORTX, two input pins per motor. */
+#define PIN_DRIVE_FRONT_LEFT_IN1_TRIS   PORTX03_TRIS
+#define PIN_DRIVE_FRONT_LEFT_IN1_LAT    PORTX03_LAT
+#define PIN_DRIVE_FRONT_LEFT_IN2_TRIS   PORTX04_TRIS
+#define PIN_DRIVE_FRONT_LEFT_IN2_LAT    PORTX04_LAT
+
+#define PIN_DRIVE_FRONT_RIGHT_IN1_TRIS  PORTX05_TRIS
+#define PIN_DRIVE_FRONT_RIGHT_IN1_LAT   PORTX05_LAT
+#define PIN_DRIVE_FRONT_RIGHT_IN2_TRIS  PORTX06_TRIS
+#define PIN_DRIVE_FRONT_RIGHT_IN2_LAT   PORTX06_LAT
+
+#define PIN_DRIVE_REAR_LEFT_IN1_TRIS    PORTX07_TRIS
+#define PIN_DRIVE_REAR_LEFT_IN1_LAT     PORTX07_LAT
+#define PIN_DRIVE_REAR_LEFT_IN2_TRIS    PORTX08_TRIS
+#define PIN_DRIVE_REAR_LEFT_IN2_LAT     PORTX08_LAT
+
+#define PIN_DRIVE_REAR_RIGHT_IN1_TRIS   PORTX09_TRIS
+#define PIN_DRIVE_REAR_RIGHT_IN1_LAT    PORTX09_LAT
+#define PIN_DRIVE_REAR_RIGHT_IN2_TRIS   PORTX10_TRIS
+#define PIN_DRIVE_REAR_RIGHT_IN2_LAT    PORTX10_LAT
+
+#define PINMAP_DRIVE_DIR_PORTX          (PIN3 | PIN4 | PIN5 | PIN6 | \
+                                         PIN7 | PIN8 | PIN9 | PIN10)
+
+/* Launcher / emitter. The final mechanism uses one flywheel plus one servo. */
+#define LAUNCHER_FLYWHEEL_PWM           PWM_PORTZ06
+#define PIN_LAUNCHER_FLYWHEEL_PWM       LAUNCHER_FLYWHEEL_PWM
+#define LAUNCHER_ENABLE_PORT            PORTX
+#define LAUNCHER_ENABLE_PIN             PIN12
+#define PIN_LAUNCHER_ENABLE_TRIS        PORTX12_TRIS
+#define PIN_LAUNCHER_ENABLE_LAT         PORTX12_LAT
+#define BALL_SERVER_SERVO_RC            RC_PORTY06
+#define PIN_BALL_SERVER_SERVO_RC        BALL_SERVER_SERVO_RC
+#define IR_EMITTER_PORT                 PORTZ
+#define IR_EMITTER_PIN                  PIN7
+#define PIN_IR_EMITTER_GATE_TRIS        PORTZ07_TRIS
+#define PIN_IR_EMITTER_GATE_LAT         PORTZ07_LAT
+
+/* Tape sensors. */
+#define PIN_TAPE_FRONT_L_ADC       AD_PORTV3
+#define PIN_TAPE_FRONT_LM_ADC      AD_PORTV4
+#define PIN_TAPE_FRONT_M_ADC       AD_PORTV5
+#define PIN_TAPE_FRONT_MR_ADC      AD_PORTV6
+#define PIN_TAPE_FRONT_R_ADC       AD_PORTV7
+#define PIN_TAPE_REAR_L_ADC        AD_PORTV8
+#define PIN_TAPE_REAR_R_ADC        AD_PORTW3
+
+#define PIN_TAPE_ADC_MASK (PIN_TAPE_FRONT_L_ADC | PIN_TAPE_FRONT_LM_ADC | \
+                           PIN_TAPE_FRONT_M_ADC | PIN_TAPE_FRONT_MR_ADC | \
+                           PIN_TAPE_FRONT_R_ADC | PIN_TAPE_REAR_L_ADC | \
+                           PIN_TAPE_REAR_R_ADC)
+#define TAPE_F_L_AD                PIN_TAPE_FRONT_L_ADC
+#define TAPE_F_LM_AD               PIN_TAPE_FRONT_LM_ADC
+#define TAPE_F_M_AD                PIN_TAPE_FRONT_M_ADC
+#define TAPE_F_RM_AD               PIN_TAPE_FRONT_MR_ADC
+#define TAPE_F_R_AD                PIN_TAPE_FRONT_R_ADC
+#define TAPE_R_LM_AD               PIN_TAPE_REAR_L_ADC
+#define TAPE_R_RM_AD               PIN_TAPE_REAR_R_ADC
+#define PINMAP_TAPE_AD_ALL         PIN_TAPE_ADC_MASK
+
+/* Beacon detectors. */
+#define PIN_BEACON_LEFT_ADC        AD_PORTW4
+#define PIN_BEACON_CENTER_ADC      AD_PORTW5
+#define PIN_BEACON_RIGHT_ADC       AD_PORTW6
+#define PIN_BEACON_ADC_MASK        (PIN_BEACON_LEFT_ADC | PIN_BEACON_CENTER_ADC | \
+                                    PIN_BEACON_RIGHT_ADC)
+#define BEACON_LEFT_AD             PIN_BEACON_LEFT_ADC
+#define BEACON_CENTER_AD           PIN_BEACON_CENTER_ADC
+#define BEACON_RIGHT_AD            PIN_BEACON_RIGHT_ADC
+#define PINMAP_BEACON_AD_ALL       PIN_BEACON_ADC_MASK
+
+/* Battery and optional coil diagnostic. Coil is never obstacle-position input. */
+#define PIN_BATTERY_ADC            AD_PORTW7
+#define PIN_COIL_DIAGNOSTIC_ADC    AD_PORTW8
+#define BATTERY_AD                 PIN_BATTERY_ADC
+#define COIL_RAW_AD                PIN_COIL_DIAGNOSTIC_ADC
+#define PIN_TRACKWIRE_LEFT_ADC     PIN_COIL_DIAGNOSTIC_ADC
+#define PIN_TRACKWIRE_RIGHT_ADC    PIN_COIL_DIAGNOSTIC_ADC
+#define PIN_TRACKWIRE_ADC_MASK     PIN_COIL_DIAGNOSTIC_ADC
+#define PINMAP_ALL_ANALOG_INPUTS   (PINMAP_TAPE_AD_ALL | PINMAP_BEACON_AD_ALL | \
+                                    PIN_BATTERY_ADC | PIN_COIL_DIAGNOSTIC_ADC)
+
+/* Bumper inputs. */
+#define PIN_BUMPER_FRONT_L_TRIS    PORTY03_TRIS
+#define PIN_BUMPER_FRONT_L_BIT     PORTY03_BIT
+#define PIN_BUMPER_FRONT_R_TRIS    PORTY05_TRIS
+#define PIN_BUMPER_FRONT_R_BIT     PORTY05_BIT
+#define PIN_BUMPER_LEFT_F_TRIS     PORTY07_TRIS
+#define PIN_BUMPER_LEFT_F_BIT      PORTY07_BIT
+#define PIN_BUMPER_LEFT_R_TRIS     PORTY08_TRIS
+#define PIN_BUMPER_LEFT_R_BIT      PORTY08_BIT
+#define PIN_BUMPER_RIGHT_F_TRIS    PORTY09_TRIS
+#define PIN_BUMPER_RIGHT_F_BIT     PORTY09_BIT
+#define PIN_BUMPER_RIGHT_R_TRIS    PORTY11_TRIS
+#define PIN_BUMPER_RIGHT_R_BIT     PORTY11_BIT
+#define PIN_BUMPER_REAR_L_TRIS     PORTZ03_TRIS
+#define PIN_BUMPER_REAR_L_BIT      PORTZ03_BIT
+#define PIN_BUMPER_REAR_R_TRIS     PORTZ04_TRIS
+#define PIN_BUMPER_REAR_R_BIT      PORTZ04_BIT
+
+/* Start button. */
+#define PIN_START_BUTTON_TRIS      PORTZ05_TRIS
+#define PIN_START_BUTTON_BIT       PORTZ05_BIT
+
+#define PINMAP_PORTX_OUTPUTS       (PINMAP_DRIVE_DIR_PORTX | LAUNCHER_ENABLE_PIN)
+#define PINMAP_PORTZ_OUTPUTS       IR_EMITTER_PIN
+#define PINMAP_ALL_PWM_OUTPUTS     (PINMAP_DRIVE_PWM_ALL | PIN_LAUNCHER_FLYWHEEL_PWM)
+
+#endif

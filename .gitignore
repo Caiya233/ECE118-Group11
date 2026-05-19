@@ -1,0 +1,17 @@
+# MPLAB X generated output
+**/build/
+**/dist/
+**/debug/
+**/.generated_files/
+**/nbproject/private/
+
+# Object and firmware artifacts
+*.o
+*.d
+*.elf
+*.hex
+*.map
+memoryfile.xml
+
+# macOS metadata
+.DS_Store
