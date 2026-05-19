@@ -4,7 +4,7 @@
 #include "PinMap.h"
 
 /* Compatibility wrapper for the planned final robot pin map.
- * The canonical v2 single-flywheel names now live directly in PinMap.h.
+ * The canonical DRV8814 PHASE/ENABLE and single-flywheel names live in PinMap.h.
  */
 #define BALL_SERVER_SERVO         PIN_BALL_SERVER_SERVO_RC
 

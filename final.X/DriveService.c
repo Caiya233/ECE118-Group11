@@ -54,23 +54,15 @@ static void NormalizeWheelCommands(int *fl, int *fr, int *rl, int *rr)
 
 static void SetDrivePinsSafe(void)
 {
-    PIN_DRIVE_FRONT_LEFT_IN1_TRIS = 0;
-    PIN_DRIVE_FRONT_LEFT_IN2_TRIS = 0;
-    PIN_DRIVE_FRONT_RIGHT_IN1_TRIS = 0;
-    PIN_DRIVE_FRONT_RIGHT_IN2_TRIS = 0;
-    PIN_DRIVE_REAR_LEFT_IN1_TRIS = 0;
-    PIN_DRIVE_REAR_LEFT_IN2_TRIS = 0;
-    PIN_DRIVE_REAR_RIGHT_IN1_TRIS = 0;
-    PIN_DRIVE_REAR_RIGHT_IN2_TRIS = 0;
+    PIN_DRIVE_FRONT_LEFT_PHASE_TRIS = 0;
+    PIN_DRIVE_FRONT_RIGHT_PHASE_TRIS = 0;
+    PIN_DRIVE_REAR_LEFT_PHASE_TRIS = 0;
+    PIN_DRIVE_REAR_RIGHT_PHASE_TRIS = 0;
 
-    PIN_DRIVE_FRONT_LEFT_IN1_LAT = 0;
-    PIN_DRIVE_FRONT_LEFT_IN2_LAT = 0;
-    PIN_DRIVE_FRONT_RIGHT_IN1_LAT = 0;
-    PIN_DRIVE_FRONT_RIGHT_IN2_LAT = 0;
-    PIN_DRIVE_REAR_LEFT_IN1_LAT = 0;
-    PIN_DRIVE_REAR_LEFT_IN2_LAT = 0;
-    PIN_DRIVE_REAR_RIGHT_IN1_LAT = 0;
-    PIN_DRIVE_REAR_RIGHT_IN2_LAT = 0;
+    PIN_DRIVE_FRONT_LEFT_PHASE_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_PHASE_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_PHASE_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_PHASE_LAT = 0;
 }
 
 uint8_t InitDriveService(uint8_t priority)
@@ -115,14 +107,10 @@ void Drive_Stop(void)
     PWM_SetDutyCycle(PIN_DRIVE_REAR_LEFT_PWM, 0);
     PWM_SetDutyCycle(PIN_DRIVE_REAR_RIGHT_PWM, 0);
 
-    PIN_DRIVE_FRONT_LEFT_IN1_LAT = 0;
-    PIN_DRIVE_FRONT_LEFT_IN2_LAT = 0;
-    PIN_DRIVE_FRONT_RIGHT_IN1_LAT = 0;
-    PIN_DRIVE_FRONT_RIGHT_IN2_LAT = 0;
-    PIN_DRIVE_REAR_LEFT_IN1_LAT = 0;
-    PIN_DRIVE_REAR_LEFT_IN2_LAT = 0;
-    PIN_DRIVE_REAR_RIGHT_IN1_LAT = 0;
-    PIN_DRIVE_REAR_RIGHT_IN2_LAT = 0;
+    PIN_DRIVE_FRONT_LEFT_PHASE_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_PHASE_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_PHASE_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_PHASE_LAT = 0;
 }
 
 void Drive_SetTank(int16_t leftDuty, int16_t rightDuty)
@@ -146,14 +134,10 @@ void Drive_SetBodyVelocity(int forward, int strafe, int yaw)
 void Drive_SetRaw(int16_t frontLeft, int16_t frontRight,
                   int16_t rearLeft, int16_t rearRight)
 {
-    PIN_DRIVE_FRONT_LEFT_IN1_LAT = (frontLeft >= 0);
-    PIN_DRIVE_FRONT_LEFT_IN2_LAT = (frontLeft < 0);
-    PIN_DRIVE_FRONT_RIGHT_IN1_LAT = (frontRight >= 0);
-    PIN_DRIVE_FRONT_RIGHT_IN2_LAT = (frontRight < 0);
-    PIN_DRIVE_REAR_LEFT_IN1_LAT = (rearLeft >= 0);
-    PIN_DRIVE_REAR_LEFT_IN2_LAT = (rearLeft < 0);
-    PIN_DRIVE_REAR_RIGHT_IN1_LAT = (rearRight >= 0);
-    PIN_DRIVE_REAR_RIGHT_IN2_LAT = (rearRight < 0);
+    PIN_DRIVE_FRONT_LEFT_PHASE_LAT = (frontLeft >= 0);
+    PIN_DRIVE_FRONT_RIGHT_PHASE_LAT = (frontRight >= 0);
+    PIN_DRIVE_REAR_LEFT_PHASE_LAT = (rearLeft >= 0);
+    PIN_DRIVE_REAR_RIGHT_PHASE_LAT = (rearRight >= 0);
 
     PWM_SetDutyCycle(PIN_DRIVE_FRONT_LEFT_PWM, DutyFromSigned(frontLeft));
     PWM_SetDutyCycle(PIN_DRIVE_FRONT_RIGHT_PWM, DutyFromSigned(frontRight));

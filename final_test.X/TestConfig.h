@@ -9,6 +9,7 @@
 #define DRIVE_TEST_PWM                 220
 #define DRIVE_TEST_MS                  500
 
+/* Initial DRV8814 PHASE polarity guesses; tune one wheel at a time. */
 #define DRIVE_FL_SIGN                  1
 #define DRIVE_FR_SIGN                  1
 #define DRIVE_RL_SIGN                  1

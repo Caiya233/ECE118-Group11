@@ -8,22 +8,31 @@ wiring as the competition image.
 
 | Function | ECE118 pin |
 | --- | --- |
-| Front left drive PWM | `PWM_PORTX11` |
-| Front right drive PWM | `PWM_PORTY04` |
-| Rear left drive PWM | `PWM_PORTY10` |
-| Rear right drive PWM | `PWM_PORTY12` |
-| Single launcher flywheel PWM | `PWM_PORTZ06` |
+| Front left DRV8814 ENABLE PWM | `PWM_PORTX11` |
+| Front right DRV8814 ENABLE PWM | `PWM_PORTY04` |
+| Rear left DRV8814 ENABLE PWM | `PWM_PORTY10` |
+| Rear right DRV8814 ENABLE PWM | `PWM_PORTY12` |
+| DS3658 Input A, single flywheel/index wheel PWM | `PWM_PORTZ06` |
 
 ## Digital Outputs
 
 | Function | Pin |
 | --- | --- |
-| Front left H-bridge IN1 / IN2 | `PORTX03` / `PORTX04` |
-| Front right H-bridge IN1 / IN2 | `PORTX05` / `PORTX06` |
-| Rear left H-bridge IN1 / IN2 | `PORTX07` / `PORTX08` |
-| Rear right H-bridge IN1 / IN2 | `PORTX09` / `PORTX10` |
-| Launcher enable / kill | `PORTX12` |
+| Front left DRV8814 PHASE | `PORTX03` |
+| Rear left DRV8814 PHASE | `PORTX04` |
+| Front right DRV8814 PHASE | `PORTX05` |
+| Rear right DRV8814 PHASE | `PORTX06` |
+| Optional launcher enable / kill | `PORTX12` |
 | IR emitter gate | `PORTZ07` |
+
+The drive tests assume the DRV8814 boards expose `AENBL`, `APHASE`, `BENBL`,
+and `BPHASE`. If the physical boards expose `IN1`/`IN2` instead, stop and
+update `PinMap.h` plus `DriveTest.c` before running motors.
+
+The flywheel/index wheel test drives a low-side DS3658 load:
+motor high side to fused `+12 V`, motor low side to DS3658 Output A, and
+`PWM_PORTZ06` to DS3658 Input A. Close the DS3658 clamp jumper for the
+inductive motor load.
 
 ## Analog Inputs
 

@@ -39,10 +39,10 @@ static void PrintMenu(void)
 
 static void PrintConfig(void)
 {
-    printf("\r\nDrive PWM pins: FL=%u FR=%u RL=%u RR=%u launcher=%u\r\n",
+    printf("\r\nDrive hardware: DRV8814 PHASE/ENABLE, PWM enables FL=%u FR=%u RL=%u RR=%u\r\n",
            PIN_DRIVE_FRONT_LEFT_PWM, PIN_DRIVE_FRONT_RIGHT_PWM,
-           PIN_DRIVE_REAR_LEFT_PWM, PIN_DRIVE_REAR_RIGHT_PWM,
-           PIN_LAUNCHER_FLYWHEEL_PWM);
+           PIN_DRIVE_REAR_LEFT_PWM, PIN_DRIVE_REAR_RIGHT_PWM);
+    printf("Drive PHASE pins: FL=X03 RL=X04 FR=X05 RR=X06\r\n");
     printf("Drive signs: FL=%d FR=%d RL=%d RR=%d test_pwm=%u test_ms=%u\r\n",
            DRIVE_FL_SIGN, DRIVE_FR_SIGN, DRIVE_RL_SIGN, DRIVE_RR_SIGN,
            DRIVE_TEST_PWM, DRIVE_TEST_MS);
@@ -50,7 +50,8 @@ static void PrintConfig(void)
            TAPE_ENTER_THRESH, TAPE_EXIT_THRESH, TAPE_FRONT_CROSS_MIN_COUNT);
     printf("Beacon: lock_thresh=%u center_tol=%u\r\n",
            BEACON_LOCK_THRESH, BEACON_CENTER_TOL);
-    printf("Launcher: fly_low=%u fly_med=%u combat=%u server_home=%u server_serve=%u hold_ms=%u return_ms=%u\r\n",
+    printf("Launcher: DS3658 InputA PWM=%u fly_low=%u fly_med=%u combat=%u server_home=%u server_serve=%u hold_ms=%u return_ms=%u\r\n",
+           PIN_LAUNCHER_FLYWHEEL_PWM,
            FLYWHEEL_TEST_PWM_LOW, FLYWHEEL_TEST_PWM_MED,
            FLYWHEEL_COMBAT_PWM, BALL_SERVER_HOME_US, BALL_SERVER_SERVE_US,
            BALL_SERVER_SERVE_HOLD_MS, BALL_SERVER_RETURN_MS);

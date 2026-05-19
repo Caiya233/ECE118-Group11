@@ -10,11 +10,20 @@
 
 /* Planned final robot pin map. Keep this file as the code-facing aliases. */
 
-/* Drive PWM outputs: 4 mecanum motors. */
-#define DRIVE_FL_PWM              PWM_PORTX11
-#define DRIVE_FR_PWM              PWM_PORTY04
-#define DRIVE_RL_PWM              PWM_PORTY10
-#define DRIVE_RR_PWM              PWM_PORTY12
+/* Drive hardware: two DRV8814 dual H-bridge boards in PHASE/ENABLE mode.
+ * The PWM pins drive the DRV8814 enable inputs. The PORTX pins drive PHASE.
+ * If the installed boards expose IN1/IN2 instead of AENBL/APHASE/BENBL/BPHASE,
+ * update this file and the drive output code before running the motors.
+ */
+#define DRIVE_FL_ENABLE_PWM       PWM_PORTX11
+#define DRIVE_FR_ENABLE_PWM       PWM_PORTY04
+#define DRIVE_RL_ENABLE_PWM       PWM_PORTY10
+#define DRIVE_RR_ENABLE_PWM       PWM_PORTY12
+
+#define DRIVE_FL_PWM              DRIVE_FL_ENABLE_PWM
+#define DRIVE_FR_PWM              DRIVE_FR_ENABLE_PWM
+#define DRIVE_RL_PWM              DRIVE_RL_ENABLE_PWM
+#define DRIVE_RR_PWM              DRIVE_RR_ENABLE_PWM
 
 #define PIN_DRIVE_FRONT_LEFT_PWM   DRIVE_FL_PWM
 #define PIN_DRIVE_FRONT_RIGHT_PWM  DRIVE_FR_PWM
@@ -25,31 +34,23 @@
                             PIN_DRIVE_REAR_LEFT_PWM | PIN_DRIVE_REAR_RIGHT_PWM)
 #define PINMAP_DRIVE_PWM_ALL      PIN_DRIVE_PWM_MASK
 
-/* Drive H-bridge direction pins on PORTX, two input pins per motor. */
-#define PIN_DRIVE_FRONT_LEFT_IN1_TRIS   PORTX03_TRIS
-#define PIN_DRIVE_FRONT_LEFT_IN1_LAT    PORTX03_LAT
-#define PIN_DRIVE_FRONT_LEFT_IN2_TRIS   PORTX04_TRIS
-#define PIN_DRIVE_FRONT_LEFT_IN2_LAT    PORTX04_LAT
+/* DRV8814 PHASE pins on PORTX. */
+#define PIN_DRIVE_FRONT_LEFT_PHASE_TRIS  PORTX03_TRIS
+#define PIN_DRIVE_FRONT_LEFT_PHASE_LAT   PORTX03_LAT
+#define PIN_DRIVE_REAR_LEFT_PHASE_TRIS   PORTX04_TRIS
+#define PIN_DRIVE_REAR_LEFT_PHASE_LAT    PORTX04_LAT
+#define PIN_DRIVE_FRONT_RIGHT_PHASE_TRIS PORTX05_TRIS
+#define PIN_DRIVE_FRONT_RIGHT_PHASE_LAT  PORTX05_LAT
+#define PIN_DRIVE_REAR_RIGHT_PHASE_TRIS  PORTX06_TRIS
+#define PIN_DRIVE_REAR_RIGHT_PHASE_LAT   PORTX06_LAT
 
-#define PIN_DRIVE_FRONT_RIGHT_IN1_TRIS  PORTX05_TRIS
-#define PIN_DRIVE_FRONT_RIGHT_IN1_LAT   PORTX05_LAT
-#define PIN_DRIVE_FRONT_RIGHT_IN2_TRIS  PORTX06_TRIS
-#define PIN_DRIVE_FRONT_RIGHT_IN2_LAT   PORTX06_LAT
+#define PINMAP_DRIVE_PHASE_PORTX        (PIN3 | PIN4 | PIN5 | PIN6)
 
-#define PIN_DRIVE_REAR_LEFT_IN1_TRIS    PORTX07_TRIS
-#define PIN_DRIVE_REAR_LEFT_IN1_LAT     PORTX07_LAT
-#define PIN_DRIVE_REAR_LEFT_IN2_TRIS    PORTX08_TRIS
-#define PIN_DRIVE_REAR_LEFT_IN2_LAT     PORTX08_LAT
-
-#define PIN_DRIVE_REAR_RIGHT_IN1_TRIS   PORTX09_TRIS
-#define PIN_DRIVE_REAR_RIGHT_IN1_LAT    PORTX09_LAT
-#define PIN_DRIVE_REAR_RIGHT_IN2_TRIS   PORTX10_TRIS
-#define PIN_DRIVE_REAR_RIGHT_IN2_LAT    PORTX10_LAT
-
-#define PINMAP_DRIVE_DIR_PORTX          (PIN3 | PIN4 | PIN5 | PIN6 | \
-                                         PIN7 | PIN8 | PIN9 | PIN10)
-
-/* Launcher / emitter. The final mechanism uses one flywheel plus one servo. */
+/* Launcher / emitter.
+ * The flywheel/index wheel is one motor driven by DS3658 low-side channel A:
+ * PWM Z06 -> DS3658 Input A, motor high side -> fused +12 V, motor low side ->
+ * DS3658 Output A. Close the clamp jumper for the inductive motor load.
+ */
 #define LAUNCHER_FLYWHEEL_PWM           PWM_PORTZ06
 #define PIN_LAUNCHER_FLYWHEEL_PWM       LAUNCHER_FLYWHEEL_PWM
 #define LAUNCHER_ENABLE_PORT            PORTX
@@ -129,7 +130,7 @@
 #define PIN_START_BUTTON_TRIS      PORTZ05_TRIS
 #define PIN_START_BUTTON_BIT       PORTZ05_BIT
 
-#define PINMAP_PORTX_OUTPUTS       (PINMAP_DRIVE_DIR_PORTX | LAUNCHER_ENABLE_PIN)
+#define PINMAP_PORTX_OUTPUTS       (PINMAP_DRIVE_PHASE_PORTX | LAUNCHER_ENABLE_PIN)
 #define PINMAP_PORTZ_OUTPUTS       IR_EMITTER_PIN
 #define PINMAP_ALL_PWM_OUTPUTS     (PINMAP_DRIVE_PWM_ALL | PIN_LAUNCHER_FLYWHEEL_PWM)
 

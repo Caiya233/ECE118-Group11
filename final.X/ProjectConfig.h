@@ -7,7 +7,7 @@
 #define DRIVE_TEST_PWM             220
 #define DRIVE_TEST_MS              500
 
-/* Initial motor polarity guesses; tune with final_test.X. */
+/* Initial DRV8814 PHASE polarity guesses; tune with final_test.X. */
 #define DRIVE_FL_SIGN              1
 #define DRIVE_FR_SIGN              1
 #define DRIVE_RL_SIGN              1
@@ -87,7 +87,7 @@
 #define TRACKWIRE_THRESH           500
 #define BUMPER_DEBOUNCE_TICKS      5
 
-/* Launcher and ball-server timing. */
+/* DS3658 flywheel/index wheel and ball-server timing. */
 #define FLYWHEEL_TEST_PWM_LOW      250
 #define FLYWHEEL_TEST_PWM_MED      450
 #define FLYWHEEL_COMBAT_PWM        650
