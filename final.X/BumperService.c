@@ -109,7 +109,9 @@ static void CheckBumpers(void)
         (sample != StableMask)) {
         uint8_t changedOn = (uint8_t)(sample & (uint8_t)~StableMask);
         StableMask = sample;
-        PostBumperGroup(changedOn);
+        if (changedOn != 0u) {
+            PostBumperGroup(changedOn);
+        }
     }
 }
 

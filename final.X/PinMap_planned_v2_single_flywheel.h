@@ -8,13 +8,12 @@
 #include "RC_Servo.h"
 
 // ============================================================
-// Drive hardware: two DRV8814 dual H-bridge boards in PHASE/ENABLE mode.
-// PWM outputs connect to AENBL/BENBL. PORTX outputs connect to APHASE/BPHASE.
-// If the physical board exposes IN1/IN2 instead, update PinMap.h before use.
+// Drive hardware: two ENA/IN1/IN2/IN3/IN4/ENB H-bridge boards.
+// Do not use X7 or X9 on the current robot.
 // ============================================================
-#define DRIVE_FL_ENABLE_PWM       PWM_PORTX11
+#define DRIVE_FL_ENABLE_PWM       PWM_PORTY10
 #define DRIVE_FR_ENABLE_PWM       PWM_PORTY04
-#define DRIVE_RL_ENABLE_PWM       PWM_PORTY10
+#define DRIVE_RL_ENABLE_PWM       PWM_PORTX11
 #define DRIVE_RR_ENABLE_PWM       PWM_PORTY12
 
 #define DRIVE_FL_PWM              DRIVE_FL_ENABLE_PWM
@@ -22,16 +21,25 @@
 #define DRIVE_RL_PWM              DRIVE_RL_ENABLE_PWM
 #define DRIVE_RR_PWM              DRIVE_RR_ENABLE_PWM
 
-#define DRIVE_FL_PHASE_PORT       PORTX
-#define DRIVE_FL_PHASE_PIN        PIN3
-#define DRIVE_RL_PHASE_PORT       PORTX
-#define DRIVE_RL_PHASE_PIN        PIN4
-#define DRIVE_FR_PHASE_PORT       PORTX
-#define DRIVE_FR_PHASE_PIN        PIN5
-#define DRIVE_RR_PHASE_PORT       PORTX
-#define DRIVE_RR_PHASE_PIN        PIN6
+#define DRIVE_FL_DIR1_PORT        PORTX
+#define DRIVE_FL_DIR1_PIN         PIN10
+#define DRIVE_FL_DIR2_PORT        PORTX
+#define DRIVE_FL_DIR2_PIN         PIN8
+#define DRIVE_RL_DIR1_PORT        PORTX
+#define DRIVE_RL_DIR1_PIN         PIN3
+#define DRIVE_RL_DIR2_PORT        PORTX
+#define DRIVE_RL_DIR2_PIN         PIN4
+#define DRIVE_FR_DIR1_PORT        PORTX
+#define DRIVE_FR_DIR1_PIN         PIN5
+#define DRIVE_FR_DIR2_PORT        PORTX
+#define DRIVE_FR_DIR2_PIN         PIN6
+#define DRIVE_RR_DIR1_PORT        PORTZ
+#define DRIVE_RR_DIR1_PIN         PIN3
+#define DRIVE_RR_DIR2_PORT        PORTX
+#define DRIVE_RR_DIR2_PIN         PIN12
 
-#define PINMAP_DRIVE_PHASE_PORTX  (PIN3 | PIN4 | PIN5 | PIN6)
+#define PINMAP_DRIVE_DIR_PORTX    (PIN3 | PIN4 | PIN5 | PIN6 | PIN8 | PIN10 | PIN12)
+#define PINMAP_DRIVE_DIR_PORTZ    PIN3
 #define PINMAP_DRIVE_PWM_ALL      (DRIVE_FL_PWM | DRIVE_FR_PWM | DRIVE_RL_PWM | DRIVE_RR_PWM)
 
 // ============================================================
@@ -40,8 +48,9 @@
 // The current mechanism has ONE flywheel/index wheel. It provides launch speed
 // and the ball-indexing/transport function. There is no separate indexing motor.
 #define LAUNCHER_FLYWHEEL_PWM     PWM_PORTZ06
+#define LAUNCHER_ENABLE_AVAILABLE 0        // X12 is RR IN4 on the current robot.
 #define LAUNCHER_ENABLE_PORT      PORTX
-#define LAUNCHER_ENABLE_PIN       PIN12    // optional external enable/kill, default OFF
+#define LAUNCHER_ENABLE_PIN       PIN12    // compatibility alias only while unavailable
 
 // Bottom ping-pong ball server servo. It releases/presents one ball, then returns home.
 #define BALL_SERVER_SERVO_RC      RC_PORTY06
@@ -106,7 +115,7 @@
 #define BUMPER_RIGHT_REAR_PORT    PORTY
 #define BUMPER_RIGHT_REAR_PIN     PIN11
 #define BUMPER_REAR_LEFT_PORT     PORTZ
-#define BUMPER_REAR_LEFT_PIN      PIN3
+#define BUMPER_REAR_LEFT_PIN      PIN11
 #define BUMPER_REAR_RIGHT_PORT    PORTZ
 #define BUMPER_REAR_RIGHT_PIN     PIN4
 
@@ -114,14 +123,14 @@
 #define START_BUTTON_PIN          PIN5
 
 #define PINMAP_BUMPER_PORTY_INPUTS (PIN3 | PIN5 | PIN7 | PIN8 | PIN9 | PIN11)
-#define PINMAP_BUMPER_PORTZ_INPUTS (PIN3 | PIN4)
+#define PINMAP_BUMPER_PORTZ_INPUTS (PIN11 | PIN4)
 #define PINMAP_START_PORTZ_INPUTS  (PIN5)
 
 // ============================================================
 // Aggregate outputs
 // ============================================================
-#define PINMAP_PORTX_OUTPUTS      (PINMAP_DRIVE_PHASE_PORTX | LAUNCHER_ENABLE_PIN)
-#define PINMAP_PORTZ_OUTPUTS      (IR_EMITTER_PIN)
+#define PINMAP_PORTX_OUTPUTS      PINMAP_DRIVE_DIR_PORTX
+#define PINMAP_PORTZ_OUTPUTS      (PINMAP_DRIVE_DIR_PORTZ | IR_EMITTER_PIN)
 #define PINMAP_ALL_PWM_OUTPUTS    (PINMAP_DRIVE_PWM_ALL | LAUNCHER_FLYWHEEL_PWM)
 
 #endif // PINMAP_PLANNED_V2_SINGLE_FLYWHEEL_H

@@ -54,15 +54,32 @@ static void NormalizeWheelCommands(int *fl, int *fr, int *rl, int *rr)
 
 static void SetDrivePinsSafe(void)
 {
-    PIN_DRIVE_FRONT_LEFT_PHASE_TRIS = 0;
-    PIN_DRIVE_FRONT_RIGHT_PHASE_TRIS = 0;
-    PIN_DRIVE_REAR_LEFT_PHASE_TRIS = 0;
-    PIN_DRIVE_REAR_RIGHT_PHASE_TRIS = 0;
+    PIN_DRIVE_FRONT_LEFT_PWM_TRIS = 0;
+    PIN_DRIVE_FRONT_RIGHT_PWM_TRIS = 0;
+    PIN_DRIVE_REAR_LEFT_PWM_TRIS = 0;
+    PIN_DRIVE_REAR_RIGHT_PWM_TRIS = 0;
+    PIN_DRIVE_FRONT_LEFT_PWM_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_PWM_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_PWM_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_PWM_LAT = 0;
 
-    PIN_DRIVE_FRONT_LEFT_PHASE_LAT = 0;
-    PIN_DRIVE_FRONT_RIGHT_PHASE_LAT = 0;
-    PIN_DRIVE_REAR_LEFT_PHASE_LAT = 0;
-    PIN_DRIVE_REAR_RIGHT_PHASE_LAT = 0;
+    PIN_DRIVE_FRONT_LEFT_DIR1_TRIS = 0;
+    PIN_DRIVE_FRONT_LEFT_DIR2_TRIS = 0;
+    PIN_DRIVE_REAR_LEFT_DIR1_TRIS = 0;
+    PIN_DRIVE_REAR_LEFT_DIR2_TRIS = 0;
+    PIN_DRIVE_FRONT_RIGHT_DIR1_TRIS = 0;
+    PIN_DRIVE_FRONT_RIGHT_DIR2_TRIS = 0;
+    PIN_DRIVE_REAR_RIGHT_DIR1_TRIS = 0;
+    PIN_DRIVE_REAR_RIGHT_DIR2_TRIS = 0;
+
+    PIN_DRIVE_FRONT_LEFT_DIR1_LAT = 0;
+    PIN_DRIVE_FRONT_LEFT_DIR2_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_DIR1_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_DIR2_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_DIR1_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_DIR2_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_DIR1_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_DIR2_LAT = 0;
 }
 
 uint8_t InitDriveService(uint8_t priority)
@@ -107,15 +124,20 @@ void Drive_Stop(void)
     PWM_SetDutyCycle(PIN_DRIVE_REAR_LEFT_PWM, 0);
     PWM_SetDutyCycle(PIN_DRIVE_REAR_RIGHT_PWM, 0);
 
-    PIN_DRIVE_FRONT_LEFT_PHASE_LAT = 0;
-    PIN_DRIVE_FRONT_RIGHT_PHASE_LAT = 0;
-    PIN_DRIVE_REAR_LEFT_PHASE_LAT = 0;
-    PIN_DRIVE_REAR_RIGHT_PHASE_LAT = 0;
+    PIN_DRIVE_FRONT_LEFT_DIR1_LAT = 0;
+    PIN_DRIVE_FRONT_LEFT_DIR2_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_DIR1_LAT = 0;
+    PIN_DRIVE_REAR_LEFT_DIR2_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_DIR1_LAT = 0;
+    PIN_DRIVE_FRONT_RIGHT_DIR2_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_DIR1_LAT = 0;
+    PIN_DRIVE_REAR_RIGHT_DIR2_LAT = 0;
 }
 
 void Drive_SetTank(int16_t leftDuty, int16_t rightDuty)
 {
-    Drive_SetRaw(leftDuty, rightDuty, leftDuty, rightDuty);
+    Drive_SetRaw(leftDuty * DRIVE_FL_SIGN, rightDuty * DRIVE_FR_SIGN,
+                 leftDuty * DRIVE_RL_SIGN, rightDuty * DRIVE_RR_SIGN);
 }
 
 void Drive_SetBodyVelocity(int forward, int strafe, int yaw)
@@ -134,10 +156,14 @@ void Drive_SetBodyVelocity(int forward, int strafe, int yaw)
 void Drive_SetRaw(int16_t frontLeft, int16_t frontRight,
                   int16_t rearLeft, int16_t rearRight)
 {
-    PIN_DRIVE_FRONT_LEFT_PHASE_LAT = (frontLeft >= 0);
-    PIN_DRIVE_FRONT_RIGHT_PHASE_LAT = (frontRight >= 0);
-    PIN_DRIVE_REAR_LEFT_PHASE_LAT = (rearLeft >= 0);
-    PIN_DRIVE_REAR_RIGHT_PHASE_LAT = (rearRight >= 0);
+    PIN_DRIVE_FRONT_LEFT_DIR1_LAT = (frontLeft >= 0);
+    PIN_DRIVE_FRONT_LEFT_DIR2_LAT = (frontLeft < 0);
+    PIN_DRIVE_REAR_LEFT_DIR1_LAT = (rearLeft >= 0);
+    PIN_DRIVE_REAR_LEFT_DIR2_LAT = (rearLeft < 0);
+    PIN_DRIVE_FRONT_RIGHT_DIR1_LAT = (frontRight >= 0);
+    PIN_DRIVE_FRONT_RIGHT_DIR2_LAT = (frontRight < 0);
+    PIN_DRIVE_REAR_RIGHT_DIR1_LAT = (rearRight >= 0);
+    PIN_DRIVE_REAR_RIGHT_DIR2_LAT = (rearRight < 0);
 
     PWM_SetDutyCycle(PIN_DRIVE_FRONT_LEFT_PWM, DutyFromSigned(frontLeft));
     PWM_SetDutyCycle(PIN_DRIVE_FRONT_RIGHT_PWM, DutyFromSigned(frontRight));

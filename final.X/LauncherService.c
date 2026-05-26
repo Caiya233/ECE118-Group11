@@ -21,10 +21,14 @@ static void PostTopEvent(ES_EventTyp_t type)
 
 static void InitLauncherPins(void)
 {
+#if LAUNCHER_ENABLE_AVAILABLE
     PIN_LAUNCHER_ENABLE_TRIS = 0;
+#endif
     PIN_IR_EMITTER_GATE_TRIS = 0;
 
+#if LAUNCHER_ENABLE_AVAILABLE
     PIN_LAUNCHER_ENABLE_LAT = 0;
+#endif
     PIN_IR_EMITTER_GATE_LAT = 0;
 }
 
@@ -87,7 +91,9 @@ ES_Event RunLauncherService(ES_Event event)
 void Launcher_SetFlywheelPWM(uint16_t duty)
 {
     duty = ClampFlywheelDuty(duty);
+#if LAUNCHER_ENABLE_AVAILABLE
     PIN_LAUNCHER_ENABLE_LAT = (duty != 0u);
+#endif
     PWM_SetDutyCycle(PIN_LAUNCHER_FLYWHEEL_PWM, duty);
 }
 
@@ -122,7 +128,9 @@ void Launcher_ServeOneBall(void)
 void Launcher_Stop(void)
 {
     BallServerReturning = FALSE;
+#if LAUNCHER_ENABLE_AVAILABLE
     PIN_LAUNCHER_ENABLE_LAT = 0;
+#endif
     PIN_IR_EMITTER_GATE_LAT = 0;
     PWM_SetDutyCycle(PIN_LAUNCHER_FLYWHEEL_PWM, 0);
     Launcher_BallServerHome();
